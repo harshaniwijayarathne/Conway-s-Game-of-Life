@@ -1,59 +1,79 @@
-import pygame, sys
+import pygame
+import sys
 from simulation import Simulation
+
 
 pygame.init()
 
-GREY = (29,29,29)
+GREY = (29, 29, 29)
+
 WINDOW_WIDTH = 750
 WINDOW_HEIGHT = 750
+
 CELL_SIZE = 25
 FPS = 12
 
-window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption("Game of Life") 
+ROWS = WINDOW_HEIGHT // CELL_SIZE
+COLUMNS = WINDOW_WIDTH // CELL_SIZE
+
+window = pygame.display.set_mode(
+    (WINDOW_WIDTH, WINDOW_HEIGHT)
+)
+
+pygame.display.set_caption("Conway's Game of Life")
 
 clock = pygame.time.Clock()
-simulation = Simulation(WINDOW_WIDTH, WINDOW_HEIGHT, CELL_SIZE)
+
+# Create simulation
+simulation = Simulation(ROWS, COLUMNS)
+
+# Create random initial state
+simulation.randomize()
 
 
-#simulation loop
 while True:
 
-    # 1. Event Handling
     for event in pygame.event.get():
+
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            pos = pygame.mouse.get_pos()
-            row = pos[1] // CELL_SIZE
-            column = pos[0] // CELL_SIZE
-            simulation.toggle_cell(row, column)
-        
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RETURN:
-                simulation.start()
-                pygame.display.set_caption("Game of Life is running")
-            elif event.key == pygame.K_SPACE:
-                simulation.stop()
-                pygame.display.set_caption("Game of Life has stopped")
-            elif event.key == pygame.K_f:
-                FPS += 2
-            elif event.key == pygame.K_s:
-                if FPS > 5:
-                    FPS -= 2
-            elif event.key == pygame.K_r:
-                simulation.create_random_state()
-            elif event.key == pygame.K_c:
-                simulation.clear()
-
-    # 2. Updating State
+    # Update simulation
     simulation.update()
 
-    # 3. Drawing
+    # Draw grid
     window.fill(GREY)
-    simulation.draw(window)
+
+    for row in range(ROWS):
+        for column in range(COLUMNS):
+
+            if simulation.grid.cells[row][column] == 1:
+
+                pygame.draw.rect(
+                    window,
+                    (0, 255, 0),
+                    (
+                        column * CELL_SIZE,
+                        row * CELL_SIZE,
+                        CELL_SIZE - 1,
+                        CELL_SIZE - 1
+                    )
+                )
+
+            else:
+
+                pygame.draw.rect(
+                    window,
+                    (55, 55, 55),
+                    (
+                        column * CELL_SIZE,
+                        row * CELL_SIZE,
+                        CELL_SIZE - 1,
+                        CELL_SIZE - 1
+                    )
+                )
 
     pygame.display.update()
+
     clock.tick(FPS)
