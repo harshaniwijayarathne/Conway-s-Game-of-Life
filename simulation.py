@@ -6,7 +6,7 @@ class Simulation:
         self.temp_grid = Grid(width, height, cell_size)
         self.rows = height // cell_size
         self.columns = width // cell_size
-        self.grid.fill_random()
+        self.run = False
 
     def draw(self, window):
         self.grid.draw(window)
@@ -24,23 +24,41 @@ class Simulation:
         return live_neighbors  
 
     def update(self):
-        for row in range(self.rows):
-            for column in range(self.columns):
-                live_neighbors = self.count_live_neighbours(self.grid, row, column)
-                cell_value = self.grid.cells[row][column]
+        if self.is_running():
+            for row in range(self.rows):
+                for column in range(self.columns):
+                    live_neighbors = self.count_live_neighbours(self.grid, row, column)
+                    cell_value = self.grid.cells[row][column]
 
-                if cell_value == 1:
-                    if live_neighbors > 3 or live_neighbors < 2:  
-                        self.temp_grid.cells[row][column] = 0
+                    if cell_value == 1:
+                        if live_neighbors > 3 or live_neighbors < 2:  
+                            self.temp_grid.cells[row][column] = 0
+                        else:
+                            self.temp_grid.cells[row][column] = 1  
+
                     else:
-                        self.temp_grid.cells[row][column] = 1  
+                        if live_neighbors == 3: 
+                            self.temp_grid.cells[row][column] = 1  
+                        else:
+                            self.temp_grid.cells[row][column] = 0 
 
-                else:
-                    if live_neighbors == 3: 
-                        self.temp_grid.cells[row][column] = 1  
-                    else:
-                        self.temp_grid.cells[row][column] = 0 
+            for row in range(self.rows):
+                for column in range(self.columns):
+                    self.grid.cells[row][column] = self.temp_grid.cells[row][column]  
 
-        for row in range(self.rows):
-            for column in range(self.columns):
-                self.grid.cells[row][column] = self.temp_grid.cells[row][column]     
+    def is_running(self):
+        return self.run 
+
+    def start(self):
+        self.run = True
+
+    def stop(self):
+        self.run = False
+
+    def clear(self):
+        if self.is_running() == False:
+            self.grid.clear()    
+
+    def create_random_state(self):
+        if self.is_running() == False:
+            self.grid.fill_random()

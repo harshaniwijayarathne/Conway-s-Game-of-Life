@@ -16,4 +16,9 @@ class Grid:
     def fill_random(self):   
         for row in range(self.rows):
             for column in range(self.columns):
-                self.cells[row][column] = random.choice([1, 0, 0, 0])                
+                self.cells[row][column] = random.choice([1, 0, 0, 0])   
+
+    def clear(self):
+        for row in range(self.rows):
+            for column in range(self.columns):
+                self.cells[row][column] = 0            
