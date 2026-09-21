@@ -18,7 +18,7 @@ class Simulation:
         for offset in neighbor_offsets:
             new_row = (row + offset[0]) % self.rows
             new_column = (column + offset[1]) % self.columns
-            if self.grid.cells[new_row][new_column] == 1:
+            if grid.cells[new_row][new_column] == 1:
                 live_neighbors += 1
 
         return live_neighbors  
