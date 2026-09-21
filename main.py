@@ -14,12 +14,7 @@ pygame.display.set_caption("Game of Life")
 
 clock = pygame.time.Clock()
 simulation = Simulation(WINDOW_WIDTH, WINDOW_HEIGHT, CELL_SIZE)
-simulation.grid.cells[5][29] = 1
-simulation.grid.cells[6][0] = 1
-simulation.grid.cells[5][0] = 1
-simulation.grid.cells[4][0] = 1
 
-print(simulation.count_live_neighbours(simulation.grid, 5, 29))
 
 #simulation loop
 while True:
@@ -31,6 +26,7 @@ while True:
             sys.exit()
 
     # 2. Updating State
+    simulation.update()
 
     # 3. Drawing
     window.fill(GREY)
