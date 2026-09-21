@@ -15,6 +15,8 @@ pygame.display.set_caption("Game of Life")
 clock = pygame.time.Clock()
 
 grid = Grid(WINDOW_WIDTH, WINDOW_HEIGHT, CELL_SIZE)
+grid.cells[0][0] = 1
+grid.cells[2][1] = 1
 
 #simulation loop
 while True:
