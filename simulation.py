@@ -62,3 +62,7 @@ class Simulation:
     def create_random_state(self):
         if self.is_running() == False:
             self.grid.fill_random()
+
+    def toggle_cell(self, row, column):
+        if self.is_running() == False:
+            self.grid.toggle_cell(row, column)

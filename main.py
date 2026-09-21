@@ -24,6 +24,12 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            pos = pygame.mouse.get_pos()
+            row = pos[1] // CELL_SIZE
+            column = pos[0] // CELL_SIZE
+            simulation.toggle_cell(row, column)
         
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
